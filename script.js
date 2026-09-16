@@ -41,8 +41,22 @@ document.addEventListener('keydown', (event) => {
 
 form?.addEventListener('submit', (event) => {
   event.preventDefault();
+
+  const formData = new FormData(form);
+  const name = formData.get('name')?.toString().trim() || 'Parent';
+  const email = formData.get('email')?.toString().trim() || 'Not provided';
+  const program = formData.get('program')?.toString().trim() || 'Not specified';
+  const message = formData.get('message')?.toString().trim() || 'No additional message';
+
+  const subject = encodeURIComponent(`Admission enquiry - ${program}`);
+  const body = encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nProgram: ${program}\n\nMessage:\n${message}`
+  );
+
+  window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+
   const status = form.querySelector('.form-status');
-  status.textContent = 'Thank you! We will be in touch shortly.';
+  status.textContent = 'Opening your email app to send the enquiry...';
   form.reset();
 });
 
